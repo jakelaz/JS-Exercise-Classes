@@ -147,6 +147,12 @@ class Instructor extends Lambdasian{
   grade(student, subject){
     return `${student.name} receives a perfect score on ${subject}`
   }
+  scoreUpdate(student){
+    let max = 40,
+        min = -20;
+    let gradeModulation = Math.random() * (max - min) + min;
+    return student.grade += gradeModulation;
+  }
 }
 
 /*
@@ -164,13 +170,16 @@ class Instructor extends Lambdasian{
         + `PRAssignment` a method that receives a subject as an argument and returns `student.name has submitted a PR for {subject}`
         + `sprintChallenge` similar to PRAssignment but returns `student.name has begun sprint challenge on {subject}`
 */
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
 class Student extends Lambdasian{
   constructor(studentAttrs){
     super(studentAttrs);
     this.previousBackground = studentAttrs.previousBackground;
     this.className = studentAttrs.className;
     this.favSubjects = studentAttrs.favSubjects;
-    this.grade = 95;
+    this.grade = getRandomInt(100);
   }
   listSubjects(){
     const favSubjectsString = this.favSubjects.join(', ');
@@ -182,7 +191,15 @@ class Student extends Lambdasian{
   sprintChallenge(subject){
     return `${this.name} has begun sprint challenge on ${subject}`
   }
+  graduate(){
+    if(this.grade > 70){
+      return `${this.name}, congratulations! You can graduate!`;
+    } else{
+      return Instructor.prototype.scoreUpdate(this);
+    }
+  }
 }
+
 
 /*
   TASK 6
